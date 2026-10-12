@@ -68,6 +68,8 @@ def main():
     parser.add_argument("--model", type=str, required=True)
     parser.add_argument("--test-data", type=str, required=True)
     parser.add_argument("--initial-balance", type=float, default=100_000.0)
+    parser.add_argument("--out", type=str, default=None,
+                         help="Output CSV for the comparison table (default: results/backtest_comparison.csv)")
     args = parser.parse_args()
 
     test_df = pd.read_csv(args.test_data)
@@ -96,9 +98,10 @@ def main():
     print(f"\nPPO agent made {len(trade_log)} trades over {len(test_df)} trading days.")
 
     # Save results for the report
+    out_path = args.out or "results/backtest_comparison.csv"
     out_df = pd.DataFrame(results).T
-    out_df.to_csv("results/backtest_comparison.csv")
-    print("\nSaved comparison table to results/backtest_comparison.csv")
+    out_df.to_csv(out_path)
+    print(f"\nSaved comparison table to {out_path}")
 
     return results
 

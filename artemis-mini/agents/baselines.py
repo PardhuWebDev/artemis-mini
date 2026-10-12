@@ -23,7 +23,7 @@ def moving_average_crossover(
     df,
     initial_balance: float = 100_000.0,
     transaction_cost_pct: float = 0.0015,
-    fast_col: str = "sma_10",
+    fast_col: str = "sma_20",
     slow_col: str = "sma_50",
 ):
     """

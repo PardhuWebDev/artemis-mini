@@ -16,9 +16,12 @@ from gymnasium import spaces
 class TradingEnv(gym.Env):
     metadata = {"render_modes": ["human"]}
 
+    # Matches the real artemis_dataset.csv schema (data_loader.py renames
+    # Open/High/Low/Close/Volume -> lowercase and ret_1d -> returns, but
+    # the indicator columns below are already lowercase in the dataset).
     FEATURE_COLUMNS = [
-        "price_to_sma10", "price_to_sma50", "macd", "macd_signal",
-        "rsi_14", "volatility_20", "returns",
+        "price_to_sma50", "macd", "macd_signal", "macd_hist",
+        "rsi_14", "volatility_20", "returns", "vol_ratio",
     ]
 
     def __init__(
@@ -28,7 +31,7 @@ class TradingEnv(gym.Env):
         transaction_cost_pct: float = 0.0015,  # ~15 bps, brokerage + slippage
         overtrade_penalty: float = 0.0005,
         window_size: int = 1,
-        llm_signal_col: str | None = None,  # e.g. "llm_regime_signal" if present
+        llm_signal_col: str | None = "regime_code",  # ARTEMIS's LLM-derived regime signal
     ):
         super().__init__()
         self.df = df.reset_index(drop=True)
